@@ -196,14 +196,17 @@ int FLASH_write_at(uint32_t address, uint64_t *pData, uint32_t len_bytes)
   */
 int FLASH_read_at(uint32_t address, uint64_t *pData, uint32_t len_bytes)
 {
-    int i;
+    int i, j;
     int ret = -1;
     uint32_t *src = (uint32_t *)(address);
-    uint32_t *dst = ((uint32_t *) pData);
+    uint8_t *dst = ((uint8_t *) pData);
+    uint32_t tmp = 0;
 
-
-    for (i = 0; i < len_bytes; i += 4) {
-        *(dst + i / 4) = *(src++);
+    for (i = 0; i < len_bytes;) {
+        tmp = *(src++);
+        for (j = 0; j < 4 && i < len_bytes; j++, i++) {
+            *(dst + i) = ((uint8_t *)&tmp)[j];
+        }
     }
 
     ret = 0;
