@@ -938,12 +938,16 @@ static void handle_kv_cmd(char *pwbuf, int blen, int argc, char **argv)
         for (i = 0; i < BLK_NUMS; i++) {
             kv_item_traverse(__item_print_cb, i, NULL);
         }
+    } else if (strcmp(rtype, "clear") == RES_OK) {
+        for (i = 0; i < BLK_NUMS; i++) {
+            kv_item_traverse(__item_del_by_prefix_cb, i, NULL);
+        }
     }
     return;
 }
 
 static struct cli_command ncmd = {
-    "kv", "kv [set key value | get key | del key | list]", handle_kv_cmd
+    "kv", "kv [set key value | get key | del key | list | clear]", handle_kv_cmd
 };
 #endif
 
