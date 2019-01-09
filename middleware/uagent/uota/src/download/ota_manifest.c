@@ -321,6 +321,10 @@ void ota_start_download_task(void* ctx){
     ota_msleep(1000);
 #endif
 
+    // close mqtt before http downlaod. for lte.m02h.
+    ota_transport *trans = ota_get_transport(((ota_service_manager *)ctx)->trans_protcol);;
+    trans->deinit();
+
 #if defined HTTPS_DOWNLOAD
     task_parms.stack_size = 6144;
 #else
