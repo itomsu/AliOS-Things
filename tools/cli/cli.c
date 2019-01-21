@@ -1056,7 +1056,11 @@ int cli_putstr(char *msg)
     uart_dev_t uart_stdio;
 
     memset(&uart_stdio, 0, sizeof(uart_stdio));
+#ifdef STDIO_UART
+    uart_stdio.port = STDIO_UART;
+#else
     uart_stdio.port = 0;
+#endif
 
     if (msg[0] != 0) {
 
@@ -1078,7 +1082,11 @@ int cli_getchar(char *inbuf)
     uart_dev_t uart_stdio;
 
     memset(&uart_stdio, 0, sizeof(uart_stdio));
+#ifdef STDIO_UART
+    uart_stdio.port = STDIO_UART;
+#else
     uart_stdio.port = 0;
+#endif
 
     ret = hal_uart_recv_II(&uart_stdio, inbuf, 1, &recv_size, HAL_WAIT_FOREVER);
 

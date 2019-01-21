@@ -52,7 +52,7 @@ GLOBAL_INCLUDES += . \
 				   
 GLOBAL_CFLAGS += -DSTM32L496xx 
 
-GLOBAL_DEFINES += STDIO_UART=0
+GLOBAL_DEFINES += STDIO_UART=1
 GLOBAL_DEFINES += CONFIG_AOS_CLI_BOARD
 
 $(NAME)_COMPONENTS += board.developerkit.secure_hal
@@ -90,7 +90,7 @@ endif
 sal ?= 1
 ifeq (1,$(sal))
 $(NAME)_COMPONENTS += sal
-module ?= wifi.bk7231
+module ?= lte.m02h
 else
 GLOBAL_DEFINES += CONFIG_NO_TCPIP
 endif

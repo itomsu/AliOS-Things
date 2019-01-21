@@ -139,7 +139,11 @@ _ssize_t _write_r(struct _reent *ptr, int fd, const void *buf, size_t nbytes)
     uart_dev_t  uart_stdio;
 
     memset(&uart_stdio, 0, sizeof(uart_stdio));
+#ifdef STDIO_UART
+    uart_stdio.port = STDIO_UART;
+#else
     uart_stdio.port = 0;
+#endif
 
     if ((fd >= FD_VFS_START) && (fd <= FD_VFS_END)) {
         return aos_write(fd, buf, nbytes);

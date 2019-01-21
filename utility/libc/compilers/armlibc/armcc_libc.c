@@ -9,7 +9,7 @@
 #include <hal/hal.h>
 
 int errno;
-extern uart_dev_t uart_0;
+extern uart_dev_t console_uart;
 
 #if defined (__CC_ARM) && defined(__MICROLIB)
 void __aeabi_assert(const char *expr, const char *file, int line)
@@ -93,7 +93,7 @@ char * strdup(const char *s)
 int fputc(int ch, FILE *f)
 {
     /* Send data. */
-    return hal_uart_send(&uart_0, (uint8_t *)(&ch), 1, 1000);
+    return hal_uart_send(&console_uart, (uint8_t *)(&ch), 1, 1000);
 }
 #endif
 

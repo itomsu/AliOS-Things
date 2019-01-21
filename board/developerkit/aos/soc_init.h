@@ -88,7 +88,7 @@ extern gpio_dev_t brd_gpio_table[];
 extern i2c_dev_t brd_i2c2_dev;
 extern i2c_dev_t brd_i2c3_dev;
 extern i2c_dev_t brd_i2c4_dev;
-extern uart_dev_t uart_0;
+extern uart_dev_t console_uart;
 
 extern BOARD_HW_VERSION get_devloperkit_hwver(void);
 extern int get_devloperkit_atuart(void);

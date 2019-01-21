@@ -34,7 +34,7 @@ size_t g_iram1_total_size = 0x00040000;
 #define GETCHAR_PROTOTYPE int __io_getchar(void)
 #endif /* defined (__CC_ARM) && defined(__MICROLIB) */
 
-uart_dev_t uart_0;
+uart_dev_t console_uart;
 
 static void stduart_init(void);
 static void brd_peri_init(void);
@@ -87,15 +87,15 @@ void stm32_soc_init(void)
 
 static void stduart_init(void)
 {
-    uart_0.port = 0;
-    uart_0.config.baud_rate = 115200;
-    uart_0.config.data_width = DATA_WIDTH_8BIT;
-    uart_0.config.flow_control = FLOW_CONTROL_DISABLED;
-    uart_0.config.mode = MODE_TX_RX;
-    uart_0.config.parity = NO_PARITY;
-    uart_0.config.stop_bits = STOP_BITS_1;
+    console_uart.port = 1;
+    console_uart.config.baud_rate = 115200;
+    console_uart.config.data_width = DATA_WIDTH_8BIT;
+    console_uart.config.flow_control = FLOW_CONTROL_DISABLED;
+    console_uart.config.mode = MODE_TX_RX;
+    console_uart.config.parity = NO_PARITY;
+    console_uart.config.stop_bits = STOP_BITS_1;
 
-    hal_uart_init(&uart_0);
+    hal_uart_init(&console_uart);
 }
 
 static gpio_irq_trigger_t mode_rising = IRQ_TRIGGER_RISING_EDGE;
@@ -228,10 +228,9 @@ void HardFault_Handler(void)
 PUTCHAR_PROTOTYPE
 {
   if (ch == '\n') {
-    //hal_uart_send(&console_uart, (void *)"\r", 1, 30000);
-    hal_uart_send(&uart_0, (void *)"\r", 1, 30000);
+    hal_uart_send(&console_uart, (void *)"\r", 1, 30000);
   }
-  hal_uart_send(&uart_0, &ch, 1, 30000);
+  hal_uart_send(&console_uart, &ch, 1, 30000);
   return ch;
 }
 
@@ -248,7 +247,7 @@ GETCHAR_PROTOTYPE
   int32_t ret = -1;
   
   uint32_t recv_size;
-  ret = hal_uart_recv_II(&uart_0, &ch, 1, &recv_size, HAL_WAIT_FOREVER);
+  ret = hal_uart_recv_II(&console_uart, &ch, 1, &recv_size, HAL_WAIT_FOREVER);
 
   if (ret == 0) {
       return ch;
