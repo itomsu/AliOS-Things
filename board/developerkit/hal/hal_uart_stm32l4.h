@@ -32,8 +32,8 @@
 #define UART1_ADV_FEATURE_INIT         UART_ADVFEATURE_NO_INIT
 #define UART1_IRQn                     USART1_IRQn
 #define UART1_CLK_ENABLE()             __HAL_RCC_USART1_CLK_ENABLE()
-#define UART1_TX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOB_CLK_ENABLE()
-#define UART1_RX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOB_CLK_ENABLE()
+#define UART1_TX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOA_CLK_ENABLE()
+#define UART1_RX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOA_CLK_ENABLE()
 
 
 /***************************** uart2 configure *******************************/
