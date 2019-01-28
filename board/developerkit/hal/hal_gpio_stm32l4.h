@@ -162,30 +162,34 @@
 #define HAL_GPIO_126               ((uint8_t)126)      /* represent GPIOH pin 14 */
 #define HAL_GPIO_127               ((uint8_t)127)      /* represent GPIOH pin 15 */
 
-#define ALS_INT                    HAL_GPIO_15
-#define AUDIO_CTL                  HAL_GPIO_53
-#define AUDIO_RST                  HAL_GPIO_54
-#define AUDIO_WU                   HAL_GPIO_52
-#define CAM_PD                     HAL_GPIO_77
-#define CAM_RST                    HAL_GPIO_24
-#define IR_IN                      HAL_GPIO_73
-#define IR_OUT                     HAL_GPIO_25
-#define LED_1                      HAL_GPIO_22
-#define LED_2                      HAL_GPIO_67
-#define LED_3                      HAL_GPIO_63
-#define KEY_1                      HAL_GPIO_75
-#define KEY_2                      HAL_GPIO_78
-#define KEY_3                      HAL_GPIO_74
 #define LCD_DCX                    HAL_GPIO_6
 #define LCD_PWR                    HAL_GPIO_71
 #define LCD_RST                    HAL_GPIO_18
 #define PCIE_RST                   HAL_GPIO_45
-#define SECURE_RST                 HAL_GPIO_79
-#define SIM_DET                    HAL_GPIO_66
-#define USB_PCIE_SW                HAL_GPIO_21
-#define WIFI_RST                   HAL_GPIO_16
-#define WIFI_WU                    HAL_GPIO_17
-#define ZIGBEE_INT                 HAL_GPIO_72
+
+#define LED_RED_1                    HAL_GPIO_65
+#define LED_RED_2                    HAL_GPIO_64
+#define LED_RED_3                    HAL_GPIO_25
+
+#define LED_R                    HAL_GPIO_38
+#define LED_G                    HAL_GPIO_63
+#define LED_B                    HAL_GPIO_62
+
+#define WIFI_RESET               HAL_GPIO_79
+#define BT_RESET                 HAL_GPIO_41
+
+#define SPI_FLASH_CS             HAL_GPIO_15
+#define SPI_FLASH_WP             HAL_GPIO_36
+#define SPI_FLASH_HOLD           HAL_GPIO_37
+
+#define ID125K_WG0               HAL_GPIO_53
+#define ID125K_WG1               HAL_GPIO_54
+
+#define RS485_RSDIR              HAL_GPIO_51  /* PD3 */
+
+#define RC_RST                   HAL_GPIO_67        /* represent GPIOE pin3 */
+#define RC_SEL0                  HAL_GPIO_59        /* represent GPIOD pin 11 */
+#define RC_SEL1                  HAL_GPIO_58        /* represent GPIOD pin 10 */
 
 #define GPIOA_SPEED	 GPIO_SPEED_FREQ_VERY_HIGH
 

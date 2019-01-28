@@ -8,6 +8,6 @@
 extern int get_devloperkit_atuart(void);
 
 // AT uart
-#define AT_UART_PORT get_devloperkit_atuart()
+#define AT_UART_PORT 2 //get_devloperkit_atuart()
 
 #endif

@@ -6,7 +6,6 @@
 #include "hal/hal.h"
 #include "k_config.h"
 #include "soc_init.h"
-#include "secure_demo.h"
 
 #include "Inc/adc.h"
 #include "Inc/crc.h"
@@ -18,6 +17,10 @@
 #include "Inc/spi.h"
 #include "Inc/tim.h"
 #include "Inc/usb_otg.h"
+
+//#include "spi_flash.h"
+//#include "board_drv_buzzer.h"
+//#include "spi_rfid.h"
 
 #if defined (__CC_ARM) && defined(__MICROLIB)
 #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
@@ -64,24 +67,28 @@ void stm32_soc_init(void)
     stduart_init();
     brd_peri_init();
     //sufficient time to make the initial GPIO level works, especially wifi reset
-    aos_msleep(50);
-    hal_gpio_output_high(&brd_gpio_table[GPIO_WIFI_RST]);
-	hal_gpio_output_high(&brd_gpio_table[GPIO_PCIE_RST]);
-    MX_DMA_Init();
-    MX_ADC3_Init();
-    MX_USART2_SMARTCARD_Init();
-    MX_DCMI_Init();
-    MX_SAI2_Init();
+    //aos_msleep(50);
+    //hal_gpio_output_high(&brd_gpio_table[GPIO_WIFI_RESET]);
+    //hal_gpio_output_high(&brd_gpio_table[GPIO_BT_RESET]);
+    //MX_DMA_Init();
+    //MX_ADC3_Init();
+    //MX_DCMI_Init();
+    //MX_SAI2_Init();
     MX_SPI1_Init();
-    MX_USB_OTG_FS_USB_Init();
-    MX_CRC_Init();
-    MX_TIM1_Init();
-    MX_TIM17_Init();
-    MX_TIM16_Init();
-    MX_IRTIM_Init();
+    //buzzer_pwm_init(80,330,200);
+    //spi_rfid_Init();
+    //rfid_init_device();
+    //MX_USB_OTG_FS_USB_Init();
+    //MX_CRC_Init();
+    // MX_TIM1_Init();
+    // MX_TIM17_Init();
+    // MX_TIM16_Init();
+    // MX_IRTIM_Init();
 
+    //spi_flash_Init();
+    
 #ifdef DEVELOPERKIT_IRDA
-    irda_init();
+    //irda_init();
 #endif
 }
 
@@ -105,28 +112,33 @@ static uint8_t gpio_set = 1;
 static uint8_t gpio_reset = 0;
 
 gpio_dev_t brd_gpio_table[] = {
-    {ALS_INT, IRQ_MODE, &mode_rising},
-    {AUDIO_CTL, OUTPUT_PUSH_PULL, &gpio_reset},
-    {AUDIO_RST, OUTPUT_PUSH_PULL, &gpio_set},
-    {AUDIO_WU, OUTPUT_PUSH_PULL, &gpio_set},
-    {CAM_PD, OUTPUT_PUSH_PULL, &gpio_set},
-    {CAM_RST, OUTPUT_PUSH_PULL, &gpio_set},
-    {LED_1, OUTPUT_PUSH_PULL, &gpio_set},
-    {LED_2, OUTPUT_PUSH_PULL, &gpio_set},
-    {LED_3, OUTPUT_PUSH_PULL, &gpio_set},
-    {KEY_1, IRQ_MODE, &mode_rising},
-    {KEY_2, IRQ_MODE, &mode_rising},
-    {KEY_3, IRQ_MODE, &mode_rising},
     {LCD_DCX, OUTPUT_PUSH_PULL, &gpio_set},
     {LCD_PWR, OUTPUT_PUSH_PULL, &gpio_reset},
     {LCD_RST, OUTPUT_PUSH_PULL, &gpio_set},
-    {PCIE_RST, OUTPUT_PUSH_PULL, &gpio_reset},
-    {SECURE_RST, OUTPUT_PUSH_PULL, &gpio_reset},
-    {SIM_DET, INPUT_HIGH_IMPEDANCE, NULL},
-    {USB_PCIE_SW, OUTPUT_PUSH_PULL, &gpio_set},
-    {WIFI_RST, OUTPUT_PUSH_PULL, &gpio_reset}, /*Low Level will reset wifi*/
-    {WIFI_WU, OUTPUT_PUSH_PULL, &gpio_set},
-    {ZIGBEE_INT, IRQ_MODE, &mode_rising},
+    {PCIE_RST, OUTPUT_PUSH_PULL, &gpio_set},
+
+    {LED_RED_1, OUTPUT_PUSH_PULL, &gpio_reset},
+    {LED_RED_2, OUTPUT_PUSH_PULL, &gpio_reset},
+    {LED_RED_3, OUTPUT_PUSH_PULL, &gpio_reset},
+    {LED_R, OUTPUT_PUSH_PULL, &gpio_reset},
+    {LED_G, OUTPUT_PUSH_PULL, &gpio_reset},
+    {LED_B, OUTPUT_PUSH_PULL, &gpio_reset},
+
+    {WIFI_RESET, OUTPUT_PUSH_PULL, &gpio_set},
+    {BT_RESET, OUTPUT_PUSH_PULL, &gpio_set},
+
+    {SPI_FLASH_CS, OUTPUT_PUSH_PULL, &gpio_set},
+    {SPI_FLASH_WP, OUTPUT_PUSH_PULL, &gpio_set},
+    {SPI_FLASH_HOLD, OUTPUT_PUSH_PULL, &gpio_set},
+
+    {ID125K_WG0, IRQ_MODE, &mode_falling},
+    {ID125K_WG1, IRQ_MODE, &mode_falling},
+
+    // {RS485_RSDIR, OUTPUT_PUSH_PULL, &gpio_set},
+
+    {RC_RST, OUTPUT_PUSH_PULL, &gpio_reset},
+    {RC_SEL0, OUTPUT_PUSH_PULL, &gpio_reset},
+    {RC_SEL1, OUTPUT_PUSH_PULL, &gpio_reset},
 };
 
 i2c_dev_t brd_i2c2_dev = {AOS_PORT_I2C2, {0}, NULL};
@@ -141,56 +153,12 @@ static void brd_peri_init(void)
     for (i = 0; i < gpcfg_num; ++i) {
     	hal_gpio_init(&brd_gpio_table[i]);
     }
+    /*
     hal_i2c_init(&brd_i2c2_dev);
     hal_i2c_init(&brd_i2c3_dev);
     hal_i2c_init(&brd_i2c4_dev);
+    */
 }
-
-BOARD_HW_VERSION get_devloperkit_hwver(void)
-{
-    static BOARD_HW_VERSION board_hwver = BOARD_HW_UNKNOW;
-    int ret = 0;
-    
-    if (board_hwver != BOARD_HW_UNKNOW) {
-        return board_hwver;
-    }
-    
-    ret = id2_test_se();
-    if (ret == 0) {
-        board_hwver = BOARD_HW_VER13;
-    } else {
-        extern SMARTCARD_HandleTypeDef hsmartcard2;
-        HAL_SMARTCARD_DeInit(&hsmartcard2);
-        board_hwver = BOARD_HW_VER12;
-    }
-    
-    return board_hwver;
-}
-
-int get_devloperkit_atuart(void)
-{
-    BOARD_HW_VERSION board_hwver = BOARD_HW_UNKNOW;
-    int ret = -1;
-    
-#ifdef DEV_SAL_BK7231
-    ret = 3;
-#else
-    board_hwver = get_devloperkit_hwver();
-    switch (board_hwver) {
-        case BOARD_HW_VER12:
-            ret = 2;
-            break;
-        case BOARD_HW_VER13:
-            ret = 4;
-            break;
-        default:
-            ret = -1;
-    }
-#endif
-    
-    return ret;
-}
-
 /**
 * @brief This function handles System tick timer.
 */
