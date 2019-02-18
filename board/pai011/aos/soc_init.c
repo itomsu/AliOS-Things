@@ -18,9 +18,9 @@
 #include "Inc/tim.h"
 #include "Inc/usb_otg.h"
 
-#include "spi_flash.h"
-#include "board_drv_buzzer.h"
-#include "spi_rfid.h"
+// #include "spi_flash.h"
+// #include "board_drv_buzzer.h"
+// #include "spi_rfid.h"
 
 #if defined (__CC_ARM) && defined(__MICROLIB)
 #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
@@ -74,10 +74,10 @@ void stm32_soc_init(void)
     //MX_ADC3_Init();
     //MX_DCMI_Init();
     //MX_SAI2_Init();
-    MX_SPI1_Init();
-    buzzer_pwm_init(80,330,200);
-    spi_rfid_Init();
-    rfid_init_device();
+    // MX_SPI1_Init();
+    // buzzer_pwm_init(80,330,200);
+    // spi_rfid_Init();
+    // rfid_init_device();
     //MX_USB_OTG_FS_USB_Init();
     //MX_CRC_Init();
     // MX_TIM1_Init();
@@ -85,7 +85,7 @@ void stm32_soc_init(void)
     // MX_TIM16_Init();
     // MX_IRTIM_Init();
 
-    spi_flash_Init();
+    // spi_flash_Init();
     
 #ifdef DEVELOPERKIT_IRDA
     //irda_init();

@@ -43,15 +43,15 @@ $(NAME)_SOURCES += Src/gpio.c \
 
 # $(NAME)_SOURCES += Src/usb_otg.c
 
-$(NAME)_SOURCES += drv/board_drv_led.c
-$(NAME)_SOURCES += drv/spi_flash.c 
-$(NAME)_SOURCES += drv/wiegand.c
-$(NAME)_SOURCES += drv/board_drv_buzzer.c 
+# $(NAME)_SOURCES += drv/board_drv_led.c
+# $(NAME)_SOURCES += drv/spi_flash.c 
+# $(NAME)_SOURCES += drv/wiegand.c
+# $(NAME)_SOURCES += drv/board_drv_buzzer.c 
 
-$(NAME)_SOURCES += drv/rfid/ISO14443.c 
-$(NAME)_SOURCES += drv/rfid/PCD663.c 
-$(NAME)_SOURCES += drv/rfid/rfid.c 
-$(NAME)_SOURCES += drv/rfid/spi_rfid.c 
+# $(NAME)_SOURCES += drv/rfid/ISO14443.c 
+# $(NAME)_SOURCES += drv/rfid/PCD663.c 
+# $(NAME)_SOURCES += drv/rfid/rfid.c 
+# $(NAME)_SOURCES += drv/rfid/spi_rfid.c 
                    
 ifeq ($(COMPILER), armcc)
 $(NAME)_SOURCES += startup_stm32l496xx_keil.s    
